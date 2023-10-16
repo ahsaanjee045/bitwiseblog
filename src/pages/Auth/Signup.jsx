@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/1.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 import toast from "react-hot-toast";
 import authService from "../../appwrite/auth.service";
+import { useSelector } from "react-redux";
 
 const registerSchema = yup.object().shape({
   email: yup
@@ -21,6 +22,7 @@ const registerSchema = yup.object().shape({
 
 export default function Signup() {
   const navigate = useNavigate();
+  const { status } = useSelector((state) => state.userState);
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -32,6 +34,13 @@ export default function Signup() {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    if (status) {
+      toast.success("Already logged in")
+      navigate("/");
+    }
+  }, [status]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/1.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 import toast from "react-hot-toast";
 import authService from "../../appwrite/auth.service";
+import { login } from "../../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -20,7 +22,9 @@ const loginSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { status } = useSelector((state) => state.userState);
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -33,6 +37,13 @@ export default function LoginPage() {
     });
   };
 
+  useEffect(() => {
+    if (status) {
+      toast.success("You are already Logged in");
+      navigate("/");
+    }
+  }, [status]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -41,8 +52,9 @@ export default function LoginPage() {
       });
 
       let user = await authService.login(result);
-      console.log(user);
+
       if (user) {
+        dispatch(login({ user }));
         toast.success("Sign in successfull");
         navigate("/");
       } else {

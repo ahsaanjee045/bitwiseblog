@@ -8,11 +8,29 @@ import Signup from "./pages/Auth/Signup";
 import NotFound from "./pages/NotFound";
 import AuthWrapper from "./components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
+import { Contact } from "lucide-react";
+import { useEffect } from "react";
+import authService from "./appwrite/auth.service";
+import { useDispatch } from "react-redux";
+import { login, logout } from "./slices/userSlice";
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authService
+      .getCurrentUser()
+      .then((user) => {
+        console.log("In APP => ", user);
+        // authService.logout()
+        dispatch(login({ user }));
+      })
+      .catch((err) => dispatch(logout()));
+  }, []);
+
   return (
     <>
-      <Toaster />
+      <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Homepage />} />
@@ -25,6 +43,7 @@ export default function App() {
             }
           />
           <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
         </Route>
         <Route
           path="/login"
