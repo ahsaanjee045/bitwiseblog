@@ -1,9 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import banner from "../assets/banner-img.png";
 import { useNavigate } from "react-router-dom";
+import PostCard from "../components/PostCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Autoplay } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+
+import "swiper/css";
+
+import "swiper/css/autoplay";
+
+let posts = [
+  {
+    id: 1,
+    title: "The law comes for Bankman-Fried.",
+    summary:
+      "Less than a week after telling a BBC journalist that he didn't think he'd be arrested for his role in crypto...",
+    thumbnail: "/src/assets/sam.jpg",
+    author: "Sam",
+    category: "Tech",
+  },
+  {
+    id: 2,
+    title: "The law comes for Bankman-Fried",
+    summary:
+      "Less than a week after telling a BBC journalist that he didn't think he'd be arrested for his role in crypto...",
+    thumbnail: "/src/assets/sam.jpg",
+    author: "Sam",
+    category: "Tech",
+  },
+  {
+    id: 3,
+    title: "The law comes for Bankman-Fried",
+    summary:
+      "Less than a week after telling a BBC journalist that he didn't think he'd be arrested for his role in crypto...",
+    thumbnail: "/src/assets/sam.jpg",
+    author: "Sam",
+    category: "Tech",
+  },
+  {
+    id: 4,
+    title: "The law comes for Bankman-Fried",
+    summary:
+      "Less than a week after telling a BBC journalist that he didn't think he'd be arrested for his role in crypto...",
+    thumbnail: "/src/assets/sam.jpg",
+    author: "Sam",
+    category: "Tech",
+  },
+];
 
 const Homepage = () => {
   const navigate = useNavigate();
+  const [active, setActive] = useState(0);
 
   return (
     <div className="">
@@ -40,13 +90,11 @@ const Homepage = () => {
         <div className="h-[130px] w-[130px] rounded-full bg-gradient-to-tr from-indigo-600 to-[#7851E9] absolute top-[50px] -left-[150px]"></div> */}
       </section>
       <section className="banner py-[80px] mx-auto flex items-center relative bg-gradient-to-br from-indigo-600 to-[#7851E8]">
-        <div className="max-w-[1080px] mx-auto">
-          <div>
+        <div className="bg-section-bg h-full w-full absolute bg-full bg-no-repeat bg-center"></div>
+        <div className="max-w-[1190px] mx-auto relative flex gap-[20px]">
+          <div className="w-[35%]">
             <h1 className="text-[90px] font-[500] text-start leading-[110px]">
-              Best <br />{" "}
-              <span className="text-white ">
-                Articles
-              </span>
+              Best <br /> <span className="text-white ">Articles</span>
               <br /> Today
             </h1>
             <div className="flex justify-start mt-5">
@@ -58,6 +106,35 @@ const Homepage = () => {
               </button>
             </div>
           </div>
+            <Swiper
+            className="w-[65%]"
+            spaceBetween={20}
+            slidesPerView={3}
+            loop
+            autoplay
+            modules={[A11y, Autoplay]}
+            navigation
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+
+            // onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
+          >
+            {posts.map((post, i) => (
+              <SwiperSlide>
+                <PostCard post={post} />
+              </SwiperSlide>
+            ))}
+            {/* <SwiperSlide>Slide 2</SwiperSlide>
+              <SwiperSlide>Slide 3</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide>
+              <SwiperSlide>Slide 4</SwiperSlide> */}
+          </Swiper>
+          {/* </div> */}
         </div>
       </section>
     </div>
