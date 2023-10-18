@@ -121,18 +121,11 @@ const Homepage = () => {
             // onSwiper={(swiper) => console.log(swiper)}
           >
             {posts.map((post, i) => (
-              <SwiperSlide>
+              <SwiperSlide virtualIndex={i}>
                 <PostCard post={post} />
               </SwiperSlide>
             ))}
-            {/* <SwiperSlide>Slide 2</SwiperSlide>
-              <SwiperSlide>Slide 3</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide> */}
+
           </Swiper>
           {/* </div> */}
         </div>

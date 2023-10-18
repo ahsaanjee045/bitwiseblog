@@ -49,12 +49,20 @@ const Header = () => {
         </ul>
         <div className="flex items-center gap-3">
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="text-[13px] font-bold bg-transparent text-indigo-600 border border-indigo-600 py-2 px-3 rounded-md hover:bg-indigo-600 hover:border-white hover:text-white transition-all duration-200"
-            >
-              Logout
-            </button>
+            <>
+              <button
+                onClick={handleLogout}
+                className="text-[13px] font-bold bg-transparent text-indigo-600 border border-indigo-600 py-2 px-3 rounded-md hover:bg-indigo-600 hover:border-white hover:text-white transition-all duration-200"
+              >
+                Logout
+              </button>
+              <button
+                onClick={() => navigate("/add-article")}
+                className="text-[13px] font-bold bg-transparent text-indigo-600 border border-indigo-600 py-2 px-3 rounded-md hover:bg-indigo-600 hover:border-white hover:text-white transition-all duration-200"
+              >
+                Add Post
+              </button>
+            </>
           ) : (
             <>
               <button

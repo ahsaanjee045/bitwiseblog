@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import authService from "./appwrite/auth.service";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./slices/userSlice";
+import AddArticles from "./pages/AddArticles";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,14 @@ export default function App() {
             element={
               <AuthWrapper auth={true}>
                 <Articles />
+              </AuthWrapper>
+            }
+          />
+          <Route
+            path="add-article"
+            element={
+              <AuthWrapper auth={true}>
+                <AddArticles />
               </AuthWrapper>
             }
           />
