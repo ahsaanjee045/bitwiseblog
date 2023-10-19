@@ -13,13 +13,21 @@ class PostService {
     this.db = new Databases(this.client);
   }
 
-  async createPost({ title, slug, thumbnail, content, userid }) {
+  async createPost({
+    title,
+    slug,
+    thumbnail,
+    content,
+    userid,
+    username,
+    summary,
+  }) {
     try {
       let post = await this.db.createDocument(
         config.databaseId,
         config.collectionId,
         ID.unique(),
-        { title, slug, thumbnail, content, userid }
+        { title, slug, thumbnail, content, userid, username, summary }
       );
       if (post) {
         return post;
@@ -32,7 +40,41 @@ class PostService {
     }
   }
 
-  async uploadImage({ file, title, slug, content, userid }) {
+  async getPosts() {
+    try {
+      let posts = await this.db.listDocuments(
+        config.databaseId,
+        config.collectionId
+      );
+      if (posts) {
+        return posts;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("ERROR WHILE GETTING POSTS", error);
+      return null;
+    }
+  }
+  async getPost(postid) {
+    try {
+      let post = await this.db.getDocument(
+        config.databaseId,
+        config.collectionId,
+        postid
+      );
+      if (post) {
+        return post;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("ERROR WHILE GETTING SINGLE POST", error);
+      return null;
+    }
+  }
+
+  async uploadImage({ file, title, slug, content, userid, username, summary }) {
     try {
       let fileId = await this.storage.createFile(
         config.bucketId,
@@ -46,6 +88,8 @@ class PostService {
           thumbnail: fileId.$id,
           content,
           userid,
+          username,
+          summary,
         });
         if (post) {
           return post;
@@ -57,6 +101,16 @@ class PostService {
       }
     } catch (error) {
       console.log("ERROR IN UPLOADING FILE : ", error);
+      return null;
+    }
+  }
+
+  getImage(imageId) {
+    try {
+      let image = this.storage.getFilePreview(config.bucketId, imageId);
+      return image || null;
+    } catch (error) {
+      console.log("ERROR IN GETTING FILE : ", error);
       return null;
     }
   }

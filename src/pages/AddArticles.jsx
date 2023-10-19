@@ -11,6 +11,7 @@ const AddArticles = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [summary, setSummary] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [content, setContent] = useState("");
   const { user } = useSelector((state) => state.userState);
@@ -26,6 +27,8 @@ const AddArticles = () => {
           slug,
           content,
           userid: user.$id,
+          username: user.name || "Guest",
+          summary,
         });
         if (res) {
           toast.success("Post Created Successfully");
@@ -39,6 +42,8 @@ const AddArticles = () => {
       console.log("ERROR IN ADD ARTICLE", error);
     }
   };
+
+  console.log("IN ADD ARTICLE ", user);
 
   return (
     <div>
@@ -95,6 +100,31 @@ const AddArticles = () => {
                         autoComplete="slug"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Post Slug...."
+                      />
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">
+                    Write a slug for this post.
+                  </p>
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="summary"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Summary
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <input
+                        type="text"
+                        name="summary"
+                        id="summary"
+                        value={summary}
+                        onChange={(e) => setSummary(e.target.value)}
+                        autoComplete="summary"
+                        className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                        placeholder="Post Summary in less than 150 characters...."
                       />
                     </div>
                   </div>

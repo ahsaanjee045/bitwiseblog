@@ -14,6 +14,7 @@ import authService from "./appwrite/auth.service";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./slices/userSlice";
 import AddArticles from "./pages/AddArticles";
+import SingleArticle from "./pages/SingleArticle";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export default function App() {
               </AuthWrapper>
             }
           />
+          <Route path="article/:id" element={<SingleArticle />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
         </Route>
