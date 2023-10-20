@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Image, User } from "lucide-react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -15,18 +15,19 @@ const AddArticles = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [content, setContent] = useState("");
   const { user } = useSelector((state) => state.userState);
+  const [preview, setPreview] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log({ title, slug, content, thumbnail, user });
-      if (user) {
+      console.log({});
+      if (user && title && slug && content && thumbnail && summary) {
         let res = await postService.uploadImage({
           file: thumbnail,
           title,
           slug,
           content,
-          userid: user.$id,
+          userid: user.userId,
           username: user.name || "Guest",
           summary,
         });
@@ -37,6 +38,8 @@ const AddArticles = () => {
           toast.error("Something went wrong while creating post");
         }
         //   console.log("RESPONSE IN ADD ARTICLE", res);
+      } else {
+        toast.error("All Fields are required");
       }
     } catch (error) {
       console.log("ERROR IN ADD ARTICLE", error);
@@ -44,6 +47,12 @@ const AddArticles = () => {
   };
 
   console.log("IN ADD ARTICLE ", user);
+
+  useEffect(() => {
+    setSlug(title.trim().toLowerCase().split(" ").join("-"));
+  }, [title]);
+
+  // console.log(thumbnail)
 
   return (
     <div>
@@ -76,7 +85,7 @@ const AddArticles = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         autoComplete="title"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="Post   Title...."
+                        placeholder="Post Title...."
                       />
                     </div>
                   </div>
@@ -95,6 +104,7 @@ const AddArticles = () => {
                         type="text"
                         name="slug"
                         id="slug"
+                        disabled
                         value={slug}
                         onChange={(e) => setSlug(e.target.value)}
                         autoComplete="slug"
@@ -140,11 +150,26 @@ const AddArticles = () => {
                   >
                     Thumbnail
                   </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                    <User
-                      className="h-12 w-12 text-gray-300"
-                      aria-hidden="true"
-                    />
+                  <div className="mt-2 flex items-center gap-x-3  ">
+                    <span className="flex w-fit items-center gap-3">
+                      {preview ? (
+                        <>
+                          <img
+                            className="h-[50px] w-[50px] rounded-full overflow-hidden object-cover object-center "
+                            src={preview}
+                            alt=""
+                          />
+                          <span className="h-fit rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            {thumbnail.name.slice(0, 12) + "..."}
+                          </span>
+                        </>
+                      ) : (
+                        <User
+                          className="h-12 w-12 text-gray-300"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </span>
                     <button
                       type="button"
                       onClick={() =>
@@ -152,10 +177,16 @@ const AddArticles = () => {
                       }
                       className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     >
-                      Upload Thumbnail
+                      {thumbnail ? "Change" : "Upload"} Thumbnail
                     </button>
                     <input
                       onChange={(e) => {
+                        let reader = new FileReader();
+
+                        reader.onload = function (file) {
+                          setPreview(file.target.result);
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
                         setThumbnail(e.target.files[0]);
                       }}
                       type="file"

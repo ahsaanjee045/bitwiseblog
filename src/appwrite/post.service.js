@@ -114,6 +114,24 @@ class PostService {
       return null;
     }
   }
+  async deletePost(postId) {
+    try {
+      let res = await this.db.deleteDocument(
+        config.databaseId,
+        config.collectionId,
+        postId
+      );
+
+      if (res) {
+        return res;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log("ERROR IN DELETEING FILE : ", error);
+      return null;
+    }
+  }
 }
 
 const postService = new PostService();

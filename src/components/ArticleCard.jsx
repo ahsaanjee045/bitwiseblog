@@ -15,7 +15,7 @@ const ArticleCard = ({ post }) => {
   //   console.log(image);
 
   return (
-    <div className="flex h-[180px] overflow-hidden p-[15px] w-full gap-4 shadow-sm shadow-gray-300 rounded-xl my-3">
+    <div className="flex h-[180px] overflow-hidden p-[15px] w-full gap-4 shadow-sm shadow-gray-300 rounded-xl my-3 bg-white ">
       <div className="w-[150px] h-[140px] rounded-2xl overflow-hidden">
         {" "}
         <img
@@ -64,3 +64,5 @@ const ArticleCard = ({ post }) => {
 };
 
 export default ArticleCard;
+
+

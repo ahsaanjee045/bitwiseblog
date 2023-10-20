@@ -24,8 +24,8 @@ const Articles = () => {
         <h1 className="text-[46px] font-bold bg-gradient-to-br from-indigo-600 to-[#8057F5] bg-clip-text text-transparent">
           For you
         </h1>
-        <div>
-          <div className="flex mt-3 rounded-full shadow-sm ring-1 ring-inset ring-gray-[#e8e8e8] focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md bg-[#e8e8e8]">
+        <div className="my-3">
+          <div className="flex mt-3 rounded-full shadow-md   sm:max-w-md bg-[#e8e8e8]">
             <input
               type="text"
               name="title"
