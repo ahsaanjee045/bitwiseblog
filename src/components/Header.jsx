@@ -5,14 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import authService from "../appwrite/auth.service";
 import toast from "react-hot-toast";
 import { logout } from "../slices/userSlice";
+import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const Header = () => {
+  const firebase = useFirebaseContext()
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userState);
+  
   const handleLogout = async () => {
     try {
-      let result = await authService.logout();
+      let result = await firebase.logout();
       console.log("Logout Function Result", result);
       if (result) {
         dispatch(logout());

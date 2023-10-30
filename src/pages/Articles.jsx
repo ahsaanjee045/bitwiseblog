@@ -3,20 +3,22 @@ import ArticleCard from "../components/ArticleCard";
 import postService from "../appwrite/post.service";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../slices/postSlice";
+import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const Articles = () => {
   const dispatch = useDispatch();
+  const firebase = useFirebaseContext()
 
   const { posts, isLoading, error } = useSelector((state) => state.postState);
 
   useEffect(() => {
-    postService
+    firebase
       .getPosts()
       .then((posts) => dispatch(getPosts(posts)))
       .catch(console.log);
   }, []);
 
-  console.log(posts?.documents);
+  console.log(posts);
 
   return (
     <div className="min-h-screen">
@@ -37,8 +39,8 @@ const Articles = () => {
           </div>
         </div>
         <div>
-          {posts?.documents?.map((doc) => {
-            return <ArticleCard key={doc.$id} post={doc} />;
+          {posts?.map((doc) => {
+            return <ArticleCard key={doc.id} post={doc.data()} id={doc.id} />;
           })}
         </div>
       </div>

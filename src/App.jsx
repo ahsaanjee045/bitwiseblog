@@ -15,20 +15,22 @@ import { useDispatch } from "react-redux";
 import { login, logout } from "./slices/userSlice";
 import AddArticles from "./pages/AddArticles";
 import SingleArticle from "./pages/SingleArticle";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import app from "./firebase/firebase.config";
+
+const auth = getAuth(app);
 
 export default function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    authService
-      .getCurrentUser()
-      .then((user) => {
-        console.log("In APP => ", user);
-        // authService.logout()
-        dispatch(login({ user }));
-      })
-      .catch((err) => dispatch(logout()));
-  }, []);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("Auth state changed")
+      dispatch(login({ user }));
+    } else {
+      dispatch(logout());
+    }
+  });
 
   return (
     <>

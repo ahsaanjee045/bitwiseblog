@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { FirebaseContext } from '../firebase/FirebaseProvider'
 
 const About = () => {
+
+
   return (
     <div>About</div>
   )

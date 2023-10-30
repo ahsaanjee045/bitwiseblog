@@ -8,8 +8,10 @@ import { ScaleLoader } from "react-spinners";
 import { Facebook, Instagram, Twitter, User } from "lucide-react";
 import { format, parse } from "date-fns";
 import parser from "html-react-parser";
+import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const SingleArticle = () => {
+  const firebase = useFirebaseContext()
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -20,8 +22,8 @@ const SingleArticle = () => {
 
   useEffect(() => {
     if (id) {
-      postService
-        .getPost(id)
+      firebase
+        .getSinglePost(id)
         .then((post) => {
           console.log("IN SINGLE POST PAGE", post);
           dispatch(setPost(post));
@@ -86,7 +88,7 @@ const SingleArticle = () => {
             {post?.title}
           </h1>
         </div>
-        {post?.userid === user?.userId && (
+        {post?.userid === user?.$id && (
           <div className="mb-3">
             <button
               onClick={handleDelete}
@@ -96,7 +98,7 @@ const SingleArticle = () => {
             </button>
           </div>
         )}
-        <div>
+        {/* <div>
           <p className="text-[15px] font-medium text-[#8e8e8e]">
             PUBLISHED :{" "}
             {format(
@@ -109,7 +111,7 @@ const SingleArticle = () => {
               "eee, MMM d yyyy"
             ).toUpperCase()}
           </p>
-        </div>
+        </div> */}
         <div className="h-[411px] my-6">
           <img
             className="max-h-full object-contain object-center"

@@ -5,7 +5,8 @@ import postService from "../appwrite/post.service";
 import preview from "../assets/image-preview.png";
 import { Link } from "react-router-dom";
 
-const ArticleCard = ({ post }) => {
+const ArticleCard = ({ post, id }) => {
+  console.log(post)
   const [image, setImage] = useState("");
   //   const {} = useSelector()
 
@@ -50,7 +51,7 @@ const ArticleCard = ({ post }) => {
             </div>
             <div>
               <Link
-                to={`/article/${post.$id}`}
+                to={`/article/${id}`}
                 className="bg-indigo-600 text-white py-2 text-[13px] px-4 rounded-full cursor-pointer"
               >
                 Read More

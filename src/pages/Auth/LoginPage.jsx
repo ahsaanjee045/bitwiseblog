@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import authService from "../../appwrite/auth.service";
 import { login } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useFirebaseContext } from "../../firebase/FirebaseProvider";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -22,6 +23,7 @@ const loginSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
+  const firebase = useFirebaseContext()
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status } = useSelector((state) => state.userState);
@@ -51,7 +53,7 @@ export default function LoginPage() {
         abortEarly: false,
       });
 
-      let user = await authService.login(result);
+      let user = await firebase.loginUser(result);
 
       if (user) {
         dispatch(login({ user }));

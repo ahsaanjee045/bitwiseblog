@@ -5,6 +5,7 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import authService from "../../appwrite/auth.service";
 import { useSelector } from "react-redux";
+import { useFirebaseContext } from "../../firebase/FirebaseProvider";
 
 const registerSchema = yup.object().shape({
   email: yup
@@ -21,6 +22,7 @@ const registerSchema = yup.object().shape({
 });
 
 export default function Signup() {
+  const firebase = useFirebaseContext()
   const navigate = useNavigate();
   const { status } = useSelector((state) => state.userState);
   const [userData, setUserData] = useState({
@@ -42,6 +44,8 @@ export default function Signup() {
     }
   }, [status]);
 
+  console.log(firebase)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -49,8 +53,8 @@ export default function Signup() {
         abortEarly: false,
       });
 
-      let user = await authService.signup(result);
-      console.log(user);
+      let user = await firebase.signup(result);
+
       if (user) {
         toast.success("Registration successfull");
         navigate("/login");
@@ -58,8 +62,8 @@ export default function Signup() {
         toast.error("Something went wrong while signing up");
       }
     } catch (error) {
-      console.log(error.errors);
-      toast.error(error.errors[0]);
+      console.log(error.errors || error);
+      toast.error(error.errors[0] || error.message);
     }
   };
 

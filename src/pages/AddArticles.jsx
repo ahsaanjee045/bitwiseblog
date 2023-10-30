@@ -6,8 +6,10 @@ import postService from "../appwrite/post.service";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const AddArticles = () => {
+  const firebase = useFirebaseContext()
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -22,12 +24,12 @@ const AddArticles = () => {
     try {
       console.log({});
       if (user && title && slug && content && thumbnail && summary) {
-        let res = await postService.uploadImage({
+        let res = await firebase.uploadFile({
           file: thumbnail,
           title,
           slug,
           content,
-          userid: user.userId,
+          userid: user?.uid,
           username: user.name || "Guest",
           summary,
         });
