@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import postService from "../appwrite/post.service";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../slices/singlepostslice";
 import toast from "react-hot-toast";

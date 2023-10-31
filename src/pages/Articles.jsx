@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ArticleCard from "../components/ArticleCard";
-import postService from "../appwrite/post.service";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../slices/postSlice";
 import { useFirebaseContext } from "../firebase/FirebaseProvider";

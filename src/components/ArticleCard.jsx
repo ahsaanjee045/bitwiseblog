@@ -1,6 +1,6 @@
 import { Heart, MessageSquare, Star, StarIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import postService from "../appwrite/post.service";
+
 // import { useSelector } from "react-redux";
 import preview from "../assets/image-preview.png";
 import { Link } from "react-router-dom";

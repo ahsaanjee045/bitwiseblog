@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import HomeLayout from "./layouts/HomeLayout";
 import Homepage from "./pages/Homepage";
 import Articles from "./pages/Articles";
@@ -6,11 +6,10 @@ import About from "./pages/About";
 import LoginPage from "./pages/Auth/LoginPage";
 import Signup from "./pages/Auth/Signup";
 import NotFound from "./pages/NotFound";
-import AuthWrapper from "./components/AuthWrapper";
+
 import { Toaster } from "react-hot-toast";
 
-import { useEffect } from "react";
-import authService from "./appwrite/auth.service";
+
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./slices/userSlice";
 import AddArticles from "./pages/AddArticles";
@@ -18,7 +17,7 @@ import SingleArticle from "./pages/SingleArticle";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "./firebase/firebase.config";
 import Contact from "./pages/Contact";
-import ArticleCard from "./components/ArticleCard";
+
 
 const auth = getAuth(app);
 

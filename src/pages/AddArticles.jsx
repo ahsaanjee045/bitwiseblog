@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Image, User } from "lucide-react";
 import { Editor } from "@tinymce/tinymce-react";
-import postService from "../appwrite/post.service";
+
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";

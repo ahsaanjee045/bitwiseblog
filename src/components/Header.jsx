@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/4.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import authService from "../appwrite/auth.service";
+
 import toast from "react-hot-toast";
 import { logout } from "../slices/userSlice";
 import { useFirebaseContext } from "../firebase/FirebaseProvider";

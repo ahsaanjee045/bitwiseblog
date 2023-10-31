@@ -3,7 +3,7 @@ import logo from "../../assets/1.png";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 import toast from "react-hot-toast";
-import authService from "../../appwrite/auth.service";
+
 import { useSelector } from "react-redux";
 import { useFirebaseContext } from "../../firebase/FirebaseProvider";
 import { ScaleLoader } from "react-spinners";

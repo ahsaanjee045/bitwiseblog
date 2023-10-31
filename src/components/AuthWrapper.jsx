@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import authService from "../appwrite/auth.service";
+
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
