@@ -4,14 +4,21 @@ import postService from "../appwrite/post.service";
 // import { useSelector } from "react-redux";
 import preview from "../assets/image-preview.png";
 import { Link } from "react-router-dom";
+import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const ArticleCard = ({ post, id }) => {
-  console.log(post)
+  const firebase = useFirebaseContext();
   const [image, setImage] = useState("");
   //   const {} = useSelector()
 
   useEffect(() => {
-    setImage(postService.getImage(post.thumbnail));
+    // setImage(firebase.getImage(post.thumbnail));
+    firebase
+      .getImage(post.thumbnail)
+      .then((url) => {
+        setImage(url);
+      })
+      .catch(console.log);
   }, []);
   //   console.log(image);
 
@@ -65,5 +72,3 @@ const ArticleCard = ({ post, id }) => {
 };
 
 export default ArticleCard;
-
-

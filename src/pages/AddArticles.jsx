@@ -5,12 +5,14 @@ import { Editor } from "@tinymce/tinymce-react";
 import postService from "../appwrite/post.service";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFirebaseContext } from "../firebase/FirebaseProvider";
 
 const AddArticles = () => {
-  const firebase = useFirebaseContext()
+  const firebase = useFirebaseContext();
   const navigate = useNavigate();
+  const [query] = useSearchParams();
+
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [summary, setSummary] = useState("");
@@ -19,25 +21,37 @@ const AddArticles = () => {
   const { user } = useSelector((state) => state.userState);
   const [preview, setPreview] = useState("");
 
+  const postid = query.get("postid");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log({});
       if (user && title && slug && content && thumbnail && summary) {
-        let res = await firebase.uploadFile({
-          file: thumbnail,
-          title,
-          slug,
-          content,
-          userid: user?.uid,
-          username: user.name || "Guest",
-          summary,
-        });
-        if (res) {
-          toast.success("Post Created Successfully");
-          navigate("/");
+        if (postid) {
+          // update here
+          let res = await firebase.updatePost(postid, { title, slug, content, thumbnail, summary})
+          if (res) {
+            toast.success("Post Updated Successfully");
+            navigate("/");
+          } else {
+            toast.error("Something went wrong while creating post");
+          }
         } else {
-          toast.error("Something went wrong while creating post");
+          let res = await firebase.uploadFile({
+            file: thumbnail,
+            title,
+            slug,
+            content,
+            userid: user?.uid,
+            username: user.name || "Guest",
+            summary,
+          });
+          if (res) {
+            toast.success("Post Created Successfully");
+            navigate("/");
+          } else {
+            toast.error("Something went wrong while creating post");
+          }
         }
         //   console.log("RESPONSE IN ADD ARTICLE", res);
       } else {
@@ -48,7 +62,20 @@ const AddArticles = () => {
     }
   };
 
-  console.log("IN ADD ARTICLE ", user);
+  useEffect(() => {
+    if (postid) {
+      firebase
+        .getSinglePost(postid)
+        .then((post) => {
+          setTitle(post.title);
+          setSlug(post.slug);
+          setSummary(post.summary);
+          setThumbnail(post.thumbnail);
+          setContent(post.content);
+        })
+        .catch(console.log);
+    }
+  }, []);
 
   useEffect(() => {
     setSlug(title.trim().toLowerCase().split(" ").join("-"));

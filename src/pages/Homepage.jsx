@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css";
 
 import "swiper/css/autoplay";
+import { useSelector } from "react-redux";
 
 let posts = [
   {
@@ -54,6 +55,7 @@ let posts = [
 const Homepage = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
+  const {status} = useSelector(state => state.userState)
 
   return (
     <div className="">
@@ -75,12 +77,19 @@ const Homepage = () => {
             <br /> Here
           </h1>
           <div className="flex justify-center lg:justify-end mt-5">
-            <button
+            {
+              status ? <button
+              onClick={() => navigate("/articles")}
+              className="bg-indigo-600 py-3 font-semibold px-5 rounded-full text-white"
+            >
+              Read Articles
+            </button> : <button
               onClick={() => navigate("/signup")}
               className="bg-indigo-600 py-3 font-semibold px-5 rounded-full text-white"
             >
-              Create Account
+              Sign IN
             </button>
+            }
           </div>
         </div>
         <div className="hidden lg:flex h-[130px] w-[130px] rounded-full bg-gradient-to-tr from-indigo-600 to-[#7851E9] absolute top-[30px] -left-[150px]"></div>

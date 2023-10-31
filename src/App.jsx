@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import HomeLayout from "./layouts/HomeLayout";
 import Homepage from "./pages/Homepage";
 import Articles from "./pages/Articles";
@@ -8,29 +8,34 @@ import Signup from "./pages/Auth/Signup";
 import NotFound from "./pages/NotFound";
 import AuthWrapper from "./components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
-import { Contact } from "lucide-react";
+
 import { useEffect } from "react";
 import authService from "./appwrite/auth.service";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./slices/userSlice";
 import AddArticles from "./pages/AddArticles";
 import SingleArticle from "./pages/SingleArticle";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "./firebase/firebase.config";
+import Contact from "./pages/Contact";
+import ArticleCard from "./components/ArticleCard";
 
 const auth = getAuth(app);
 
 export default function App() {
   const dispatch = useDispatch();
+  const { status, user } = useSelector((state) => state.userState);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("Auth state changed")
+      console.log("Auth state changed");
       dispatch(login({ user }));
     } else {
       dispatch(logout());
     }
   });
+
+  console.log(user)
 
   return (
     <>
@@ -38,36 +43,24 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Homepage />} />
-          <Route
-            path="articles"
-            element={
-              <AuthWrapper auth={true}>
-                <Articles />
-              </AuthWrapper>
-            }
-          />
-          <Route
-            path="add-article"
-            element={
-              <AuthWrapper auth={true}>
-                <AddArticles />
-              </AuthWrapper>
-            }
-          />
-          <Route path="article/:id" element={<SingleArticle />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="articles" element={<Articles />} />
+          <Route path="article/:id" element={<SingleArticle />} />
+          <Route
+            path="add-article"
+            element={status ? <AddArticles /> : <Navigate to={"/login"} />}
+          />
         </Route>
         <Route
           path="/login"
-          element={
-            <AuthWrapper auth={false}>
-              <LoginPage />
-            </AuthWrapper>
-          }
+          element={status ? <Navigate to={"/"} /> : <LoginPage />}
         />
 
-        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/signup"
+          element={status ? <Navigate to={"/"} /> : <Signup />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

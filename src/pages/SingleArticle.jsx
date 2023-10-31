@@ -9,9 +9,10 @@ import { Facebook, Instagram, Twitter, User } from "lucide-react";
 import { format, parse } from "date-fns";
 import parser from "html-react-parser";
 import { useFirebaseContext } from "../firebase/FirebaseProvider";
+import preview from "../assets/image-preview.png";
 
 const SingleArticle = () => {
-  const firebase = useFirebaseContext()
+  const firebase = useFirebaseContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const SingleArticle = () => {
   // const [error, setError] = useState(null);
   const { post } = useSelector((state) => state.singlePostState);
   const { user } = useSelector((state) => state.userState);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -27,16 +29,20 @@ const SingleArticle = () => {
         .then((post) => {
           console.log("IN SINGLE POST PAGE", post);
           dispatch(setPost(post));
+          return firebase.getImage(post.thumbnail);
         })
+        .then((url) => setImage(url))
         .catch((err) => toast.error(err.message || "Something went wrong"))
         .finally(() => setIsLoading(false));
     }
   }, [id]);
 
+  // console.log(image)
+
   const handleDelete = async () => {
     try {
       if (id) {
-        let res = await postService.deletePost(id);
+        let res = await firebase.deletePost(id);
         if (res) {
           toast.success("Post Deleted Successfully");
           navigate("/articles");
@@ -49,7 +55,8 @@ const SingleArticle = () => {
       toast.error(error.message || "Something went wrong");
     }
   };
-  console.log(user);
+  console.log("IN SINGLE ARTICLE PAGE", user);
+  console.log("IN SINGLE ARTICLE PAGE", post);
 
   return isLoading ? (
     <div className="min-h-screen min-w-full flex items-center justify-center">
@@ -88,13 +95,22 @@ const SingleArticle = () => {
             {post?.title}
           </h1>
         </div>
-        {post?.userid === user?.$id && (
-          <div className="mb-3">
+        {post?.userid === user?.uid && (
+          <div className="mb-3 flex gap-3 items-center">
             <button
               onClick={handleDelete}
               className="bg-red-500 rounded-lg py-[6px] px-4 text-white font-semibold text-[13px]"
             >
               Delete
+            </button>
+            <button
+              onClick={() => {
+                navigate(`/add-article?postid=${id}`)
+              }}
+
+              className="bg-orange-500 rounded-lg py-[6px] px-4 text-white font-semibold text-[13px]"
+            >
+              Update
             </button>
           </div>
         )}
@@ -115,7 +131,7 @@ const SingleArticle = () => {
         <div className="h-[411px] my-6">
           <img
             className="max-h-full object-contain object-center"
-            src={postService.getImage(post?.thumbnail)}
+            src={image || preview}
             alt=""
           />
         </div>
