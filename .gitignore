@@ -10,7 +10,7 @@ lerna-debug.log*
 
 appwrite
 .env
-src/firebase/firebase.config.js
+
 node_modules
 dist
 dist-ssr
